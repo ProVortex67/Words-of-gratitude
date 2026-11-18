@@ -200,6 +200,22 @@
     document.addEventListener("keydown", event => { if (event.key === "Escape") { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); } });
 
     function safeText(value) { return String(value ?? "").replace(/[<>]/g, ""); }
+    // Basic kindness filter: blocks common insults and profanity in names and messages.
+    const blockedTerms = [
+      "idiot", "stupid", "dumb", "moron", "loser", "bitch", "bastard",
+      "fuck", "shit", "asshole", "kill yourself",
+      "arschloch", "dummkopf", "hurensohn", "wichser", "miststück",
+      "scheisse", "scheiße", "fick"
+    ];
+    function containsBlockedLanguage(value) {
+      const normalized = String(value).toLowerCase()
+        .replace(/[ä]/g, "ae").replace(/[ö]/g, "oe").replace(/[ü]/g, "ue")
+        .replace(/[^a-z0-9]+/g, " ").trim();
+      return blockedTerms.some(term => {
+        const cleanTerm = term.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+        return (" " + normalized + " ").includes(" " + cleanTerm + " ");
+      });
+    }
     function getDemoEntries() {
       try { return JSON.parse(localStorage.getItem(DEMO_KEY) || "[]"); } catch { return []; }
     }
@@ -263,6 +279,10 @@
       const name = nameInput.value.trim().replace(/\s+/g," ");
       const message = messageInput.value.trim().replace(/\s+/g," ");
       if (!name || !message || name.length > 24 || message.length > 180) { statusEl.textContent = "Please add a name and a message within the limits."; return; }
+      if (containsBlockedLanguage(name) || containsBlockedLanguage(message)) {
+        statusEl.textContent = "Please keep it kind. Insults and offensive language aren't allowed.";
+        return;
+      }
       submitButton.disabled = true; statusEl.textContent = "Sending your little light...";
       const entry = {name,message,created_at:new Date().toISOString()};
       try {
