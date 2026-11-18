@@ -28,6 +28,23 @@ with check (
 
 -- No public update or delete policy is intentionally provided.
 
+-- Basic server-side insult filter. This still cannot catch every spelling or coded insult.
+do $
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conname = 'gratitude_entries_kind_language'
+      and conrelid = 'public.gratitude_entries'::regclass
+  ) then
+    alter table public.gratitude_entries
+    add constraint gratitude_entries_kind_language
+    check (
+      lower(name || ' ' || message) !~
+      '(^|[^a-z0-9])(fuck|fucker|shit|bitch|bastard|asshole|idiot|stupid|moron|loser|arschloch|hurensohn|wichser|dummkopf|miststueck|scheisse|fick)([^a-z0-9]|$)'
+    );
+  end if;
+end $;
+
 do $$
 begin
   if not exists (
