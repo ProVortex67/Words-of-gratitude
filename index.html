@@ -73,6 +73,10 @@
     .reveal h2{font-size:clamp(35px,7vw,58px);margin:20px 0}
     .reveal blockquote{font:italic clamp(22px,4vw,31px)/1.5 'Playfair Display';color:#f6d99e;margin:20px 0;overflow-wrap:anywhere}
     .reveal p{color:#c0cbbb;font-size:13px;line-height:1.8}
+    .typing-cursor{display:inline-block;width:2px;height:1em;background:var(--gold);margin-left:4px;vertical-align:-.12em;animation:blink .75s steps(2,start) infinite}
+    @keyframes blink{to{visibility:hidden}}
+    .confetti-piece{position:fixed;top:-18px;left:var(--x);width:var(--w);height:var(--h);background:var(--c);z-index:20;pointer-events:none;opacity:.95;border-radius:2px;animation:confetti-fall var(--duration) cubic-bezier(.18,.65,.35,1) forwards;transform:rotate(var(--rotation))}
+    @keyframes confetti-fall{to{transform:translate3d(var(--drift),110vh,0) rotate(var(--spin));opacity:.12}}
     .close{margin-top:22px;background:transparent;border:1px solid rgba(245,200,117,.55);border-radius:30px;color:var(--gold);padding:11px 23px;cursor:pointer}
     footer{border-top:1px solid rgba(255,255,255,.08);padding:25px 0 35px;color:#829084;font-size:10px;display:flex;justify-content:space-between;gap:15px}
     footer span:last-child{color:#b9a77f}
@@ -142,11 +146,58 @@
     const reveal = document.getElementById("reveal");
     let supabase = null;
     let realtimeChannel = null;
+    let typingTimer = null;
+
+    function launchConfetti() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const colors = ["#f5c875", "#e8a45b", "#fff4df", "#a9c58e", "#d9894c"];
+      for (let i = 0; i < 90; i++) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.setProperty("--x", (Math.random() * 100) + "vw");
+        piece.style.setProperty("--w", (5 + Math.random() * 6) + "px");
+        piece.style.setProperty("--h", (7 + Math.random() * 9) + "px");
+        piece.style.setProperty("--c", colors[i % colors.length]);
+        piece.style.setProperty("--duration", (2.2 + Math.random() * 2.1) + "s");
+        piece.style.setProperty("--drift", ((Math.random() - .5) * 220) + "px");
+        piece.style.setProperty("--spin", (360 + Math.random() * 900) + "deg");
+        piece.style.setProperty("--rotation", (Math.random() * 180) + "deg");
+        document.body.append(piece);
+        piece.addEventListener("animationend", () => piece.remove(), {once:true});
+      }
+    }
+    function typeRevealText(message) {
+      const quote = document.getElementById("reveal-quote");
+      const text = "“" + message + "”";
+      quote.textContent = "";
+      if (typingTimer) clearTimeout(typingTimer);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        quote.textContent = text;
+        return;
+      }
+      const cursor = document.createElement("span");
+      cursor.className = "typing-cursor";
+      cursor.setAttribute("aria-hidden", "true");
+      quote.append(cursor);
+      let index = 0;
+      function typeNext() {
+        if (!reveal.classList.contains("show")) return;
+        if (index < text.length) {
+          cursor.before(document.createTextNode(text[index]));
+          index++;
+          typingTimer = setTimeout(typeNext, 34);
+        } else {
+          cursor.remove();
+          typingTimer = null;
+        }
+      }
+      typeNext();
+    }
 
     messageInput.addEventListener("input", () => count.textContent = messageInput.value.length);
-    document.getElementById("close-reveal").addEventListener("click", () => reveal.classList.remove("show"));
-    reveal.addEventListener("click", event => { if (event.target === reveal) reveal.classList.remove("show"); });
-    document.addEventListener("keydown", event => { if (event.key === "Escape") reveal.classList.remove("show"); });
+    document.getElementById("close-reveal").addEventListener("click", () => { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); });
+    reveal.addEventListener("click", event => { if (event.target === reveal) { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); } });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); } });
 
     function safeText(value) { return String(value ?? "").replace(/[<>]/g, ""); }
     function getDemoEntries() {
@@ -180,8 +231,10 @@
       });
     }
     function showReveal(message) {
-      document.getElementById("reveal-quote").textContent = "“" + message + "”";
-      reveal.classList.add("show"); document.getElementById("close-reveal").focus();
+      reveal.classList.add("show");
+      typeRevealText(message);
+      launchConfetti();
+      document.getElementById("close-reveal").focus();
     }
     async function setupCommunityWall() {
       if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
