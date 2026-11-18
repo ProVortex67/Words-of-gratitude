@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101b17">
+  <meta name="description" content="A little place to pause, give thanks, and share a moment of gratitude.">
+  <title>Words of Gratitude — A little light in the season</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--bg:#101b17;--panel:rgba(23,39,31,.82);--gold:#f5c875;--cream:#fff4df;--muted:#b6c1b3;--line:rgba(255,231,185,.16);--orange:#d9894c}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#344a35 0%,#17271f 42%,#0c1412 100%);color:var(--cream);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.19;background-image:radial-gradient(#f8d58a 1px,transparent 1px);background-size:74px 74px;mask-image:linear-gradient(to bottom,black,transparent 80%);z-index:-1}
+    .forest{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+    .glow{position:absolute;width:36rem;height:36rem;border-radius:50%;filter:blur(90px);opacity:.12;background:#e5a64f;top:5%;left:50%;transform:translateX(-50%)}
+    .tree{position:absolute;bottom:-8rem;width:22rem;height:34rem;border:solid rgba(5,12,10,.42);border-width:0 0 0 18px;border-radius:50%;transform:rotate(18deg)}
+    .tree:after,.tree:before{content:"";position:absolute;width:13rem;height:25rem;border-left:13px solid rgba(5,12,10,.38);border-radius:50%;transform:rotate(36deg);left:2rem;top:2rem}
+    .tree.left{left:-12rem}.tree.right{right:-13rem;transform:scaleX(-1) rotate(18deg)}
+    .leaf{position:absolute;top:-12vh;color:#d99b48;opacity:0;animation:fall linear infinite;text-shadow:0 0 16px #e9a84c}
+    @keyframes fall{0%{transform:translate3d(0,-10vh,0) rotate(0);opacity:0}12%{opacity:.72}85%{opacity:.5}100%{transform:translate3d(90px,115vh,0) rotate(440deg);opacity:0}}
+    .wrap{width:min(1080px,calc(100% - 36px));margin:auto}
+    header{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07)}
+    .brand{display:flex;align-items:center;gap:11px;letter-spacing:.12em;text-transform:uppercase;font-size:11px;font-weight:700;color:#e9d6ac}
+    .brand-mark{width:32px;height:32px;border:1px solid #b78a4c;border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:17px}
+    nav a{color:#c5cdbf;text-decoration:none;font-size:13px;margin-left:24px}nav a:hover{color:var(--gold)}
+    .hero{text-align:center;padding:86px 0 54px;position:relative}
+    .eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.25em;font-size:10px;font-weight:700}
+    h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500}
+    h1{font-size:clamp(48px,8vw,88px);line-height:1.04;letter-spacing:-.045em;margin:20px 0 18px}
+    h1 span{color:var(--gold);font-style:italic}
+    .hero p{max-width:530px;margin:0 auto;color:#c3cabb;font-size:16px;line-height:1.8}
+    .ornament{display:flex;align-items:center;justify-content:center;gap:12px;color:#d4a85e;margin:28px auto 0;font-size:13px}.ornament:before,.ornament:after{content:"";height:1px;width:48px;background:linear-gradient(90deg,transparent,#b58b50)}
+    .ornament:after{transform:rotate(180deg)}
+    .layout{display:grid;grid-template-columns:1fr .88fr;gap:22px;align-items:start;padding-bottom:76px}
+    .panel{background:linear-gradient(145deg,rgba(31,50,39,.88),rgba(17,30,24,.88));border:1px solid var(--line);border-radius:22px;box-shadow:0 22px 70px rgba(0,0,0,.2);backdrop-filter:blur(14px)}
+    .form-panel{padding:32px}
+    .panel-kicker{color:var(--gold);font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+    h2{font-size:32px;margin:10px 0 8px}
+    .sub{color:var(--muted);font-size:13px;line-height:1.7;margin:0 0 26px}
+    label{display:block;font-size:12px;color:#e6dfcc;margin:18px 0 8px}
+    input,textarea{width:100%;background:rgba(7,15,12,.52);border:1px solid rgba(241,215,167,.2);border-radius:12px;color:var(--cream);font:inherit;font-size:14px;padding:14px 15px;outline:none;transition:border .2s,box-shadow .2s}
+    input:focus,textarea:focus{border-color:#d5a75b;box-shadow:0 0 0 3px rgba(213,167,91,.12)}
+    textarea{resize:vertical;min-height:116px;line-height:1.6}
+    input::placeholder,textarea::placeholder{color:#738176}
+    .count{font-size:10px;color:#8e9b8d;text-align:right;margin-top:6px}
+    .privacy{font-size:11px;color:#aeb9a9;line-height:1.6;margin:15px 0}
+    .privacy strong{color:#e9d6ac}
+    .submit{width:100%;border:0;border-radius:12px;padding:15px 18px;background:linear-gradient(110deg,#e8c17a,#c98b48);color:#1d2118;font:700 13px 'DM Sans';letter-spacing:.04em;cursor:pointer;box-shadow:0 8px 25px rgba(201,139,72,.17);transition:transform .2s,filter .2s}
+    .submit:hover{transform:translateY(-2px);filter:brightness(1.08)}.submit:disabled{opacity:.55;cursor:wait;transform:none}
+    .wall-panel{padding:28px;min-height:540px}
+    .wall-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .wall-head h2{font-size:27px;margin:8px 0}
+    .live{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#b9d1a9;border:1px solid rgba(185,209,169,.25);padding:7px 9px;border-radius:30px;white-space:nowrap}
+    .wall-intro{color:var(--muted);font-size:12px;margin:0 0 18px}
+    .entries{display:grid;gap:11px}
+    .entry{padding:16px 17px;border:1px solid rgba(244,220,176,.12);background:rgba(8,17,13,.36);border-radius:14px;animation:arrive .65s both}
+    @keyframes arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .entry-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+    .entry-name{font-size:12px;color:var(--gold);font-weight:700}.entry-date{font-size:9px;color:#849184}
+    .entry-message{font-family:'Playfair Display',serif;font-size:17px;line-height:1.45;color:#f5eddb;overflow-wrap:anywhere}
+    .empty{border:1px dashed rgba(244,220,176,.2);border-radius:14px;padding:32px 18px;text-align:center;color:#aab6a6;font-size:12px;line-height:1.7}
+    .empty .star{font-size:25px;color:var(--gold);display:block;margin-bottom:10px}
+    .status{min-height:18px;margin:12px 0 0;font-size:11px;color:#e7c987}
+    .reveal{position:fixed;inset:0;background:rgba(5,12,9,.94);display:none;place-items:center;z-index:5;padding:22px;backdrop-filter:blur(15px)}
+    .reveal.show{display:grid;animation:fade .5s both}@keyframes fade{from{opacity:0}to{opacity:1}}
+    .reveal-card{max-width:590px;text-align:center;position:relative;padding:45px 28px}
+    .reveal-spark{font-size:34px;color:var(--gold);animation:pulse 2s infinite}
+    @keyframes pulse{50%{transform:scale(1.18);filter:drop-shadow(0 0 20px #efbc68)}}
+    .reveal h2{font-size:clamp(35px,7vw,58px);margin:20px 0}
+    .reveal blockquote{font:italic clamp(22px,4vw,31px)/1.5 'Playfair Display';color:#f6d99e;margin:20px 0;overflow-wrap:anywhere}
+    .reveal p{color:#c0cbbb;font-size:13px;line-height:1.8}
+    .close{margin-top:22px;background:transparent;border:1px solid rgba(245,200,117,.55);border-radius:30px;color:var(--gold);padding:11px 23px;cursor:pointer}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:25px 0 35px;color:#829084;font-size:10px;display:flex;justify-content:space-between;gap:15px}
+    footer span:last-child{color:#b9a77f}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:760px){header{height:70px}.hero{padding:65px 0 40px}.layout{grid-template-columns:1fr;gap:16px;padding-bottom:48px}.form-panel,.wall-panel{padding:23px}.wall-panel{min-height:0}nav a{margin-left:13px;font-size:11px}footer{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.leaf{display:none}}
+  </style>
+</head>
+<body>
+  <div class="forest" aria-hidden="true"><div class="glow"></div><div class="tree left"></div><div class="tree right"></div></div>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="brand-mark">✧</span> A season of thanks</div>
+      <nav><a href="#share">Share</a><a href="#wall">The wall</a></nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow">A small pause in a busy world</div>
+        <h1>Words of <span>Gratitude</span></h1>
+        <p>Among the falling leaves, take a moment to notice the good things. A person, a place, a tiny moment — every bit of gratitude adds a little light.</p>
+        <div class="ornament" aria-hidden="true">✦</div>
+      </section>
+      <section class="layout">
+        <div class="panel form-panel" id="share">
+          <div class="panel-kicker">Leave a little light</div>
+          <h2>What are you thankful for?</h2>
+          <p class="sub">Your words might be exactly the reminder someone else needs today.</p>
+          <form id="gratitude-form">
+            <label for="visitor-name">Your name or nickname</label>
+            <input id="visitor-name" name="name" maxlength="24" placeholder="How should we call you?" autocomplete="nickname" required>
+            <label for="gratitude-text">Your words of gratitude</label>
+            <textarea id="gratitude-text" name="message" maxlength="180" placeholder="I'm thankful for..." required></textarea>
+            <div class="count"><span id="char-count">0</span> / 180</div>
+            <p class="privacy"><strong>A gentle note:</strong> Your name and message will be public on this wall. Please don't share private information.</p>
+            <button class="submit" id="submit-button" type="submit">Share my gratitude <span aria-hidden="true">✧</span></button>
+            <p class="status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="panel wall-panel" id="wall">
+          <div class="wall-head"><div><div class="panel-kicker">A forest of kind thoughts</div><h2>The Gratitude Wall</h2></div><span class="live" id="connection-state">● Community wall</span></div>
+          <p class="wall-intro">Little reminders from people, gathered in one place.</p>
+          <div class="entries" id="entries" aria-live="polite">
+            <div class="empty"><span class="star">✧</span>Every great forest begins with a single seed.<br>Be the first to plant a thought.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer><span>Made with a grateful heart · November 2026</span><span>Let the little things glow.</span></footer>
+  </div>
+  <div class="reveal" id="reveal" role="dialog" aria-modal="true" aria-labelledby="reveal-title">
+    <div class="reveal-card"><div class="reveal-spark">✧ ✦ ✧</div><div class="eyebrow">Your thought has found its place</div><h2 id="reveal-title">A little light, shared.</h2><blockquote id="reveal-quote"></blockquote><p>Thank you for adding your light to this little corner of the world.</p><button class="close" id="close-reveal">Return to the forest</button></div>
+  </div>
+  <script>
+    // Add your Supabase project URL and anon key here after running supabase/schema.sql.
+    // Never put a Supabase service_role key in a browser project.
+    const SUPABASE_URL = "";
+    const SUPABASE_ANON_KEY = "";
+    const DEMO_KEY = "words-of-gratitude-demo-v1";
+    const form = document.getElementById("gratitude-form");
+    const nameInput = document.getElementById("visitor-name");
+    const messageInput = document.getElementById("gratitude-text");
+    const count = document.getElementById("char-count");
+    const entriesEl = document.getElementById("entries");
+    const statusEl = document.getElementById("form-status");
+    const submitButton = document.getElementById("submit-button");
+    const connectionState = document.getElementById("connection-state");
+    const reveal = document.getElementById("reveal");
+    let supabase = null;
+    let realtimeChannel = null;
+
+    messageInput.addEventListener("input", () => count.textContent = messageInput.value.length);
+    document.getElementById("close-reveal").addEventListener("click", () => reveal.classList.remove("show"));
+    reveal.addEventListener("click", event => { if (event.target === reveal) reveal.classList.remove("show"); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") reveal.classList.remove("show"); });
+
+    function safeText(value) { return String(value ?? "").replace(/[<>]/g, ""); }
+    function getDemoEntries() {
+      try { return JSON.parse(localStorage.getItem(DEMO_KEY) || "[]"); } catch { return []; }
+    }
+    function saveDemoEntry(entry) {
+      const all = [entry, ...getDemoEntries()].slice(0, 30);
+      localStorage.setItem(DEMO_KEY, JSON.stringify(all));
+      return all;
+    }
+    function renderEntries(entries) {
+      entriesEl.replaceChildren();
+      if (!entries.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        const star = document.createElement("span");
+        star.className = "star"; star.textContent = "✧";
+        empty.append(star, document.createTextNode("Every great forest begins with a single seed."));
+        const br = document.createElement("br"); empty.append(br, document.createTextNode("Be the first to plant a thought."));
+        entriesEl.append(empty); return;
+      }
+      entries.slice(0, 12).forEach((entry, index) => {
+        const card = document.createElement("article"); card.className = "entry"; card.style.animationDelay = (index * 55) + "ms";
+        const top = document.createElement("div"); top.className = "entry-top";
+        const author = document.createElement("span"); author.className = "entry-name"; author.textContent = "✧ " + safeText(entry.name);
+        const date = document.createElement("span"); date.className = "entry-date";
+        const parsed = entry.created_at ? new Date(entry.created_at) : null;
+        date.textContent = parsed && !Number.isNaN(parsed.getTime()) ? parsed.toLocaleDateString(undefined,{month:"short",day:"numeric"}) : "Just shared";
+        const message = document.createElement("div"); message.className = "entry-message"; message.textContent = "“" + safeText(entry.message) + "”";
+        top.append(author,date); card.append(top,message); entriesEl.append(card);
+      });
+    }
+    function showReveal(message) {
+      document.getElementById("reveal-quote").textContent = "“" + message + "”";
+      reveal.classList.add("show"); document.getElementById("close-reveal").focus();
+    }
+    async function setupCommunityWall() {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        connectionState.textContent = "● Preview mode";
+        renderEntries(getDemoEntries());
+        return;
+      }
+      try {
+        const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+        supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await supabase.from("gratitude_entries").select("id,name,message,created_at").order("created_at",{ascending:false}).limit(30);
+        if (error) throw error;
+        renderEntries(data || []);
+        connectionState.textContent = "● Community live";
+        realtimeChannel = supabase.channel("gratitude-wall").on("postgres_changes",{event:"INSERT",schema:"public",table:"gratitude_entries"},payload => {
+          const current = Array.from(entriesEl.querySelectorAll(".entry")).map(card => ({name:card.querySelector(".entry-name")?.textContent?.replace(/^✧ /,"") || "",message:card.querySelector(".entry-message")?.textContent?.replace(/^“|”$/g,"") || ""}));
+          renderEntries([payload.new,...current].slice(0,30));
+        }).subscribe();
+      } catch (error) {
+        console.error(error); connectionState.textContent = "● Offline preview"; statusEl.textContent = "The community wall could not connect. Preview mode is still available.";
+        renderEntries(getDemoEntries());
+      }
+    }
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const name = nameInput.value.trim().replace(/\s+/g," ");
+      const message = messageInput.value.trim().replace(/\s+/g," ");
+      if (!name || !message || name.length > 24 || message.length > 180) { statusEl.textContent = "Please add a name and a message within the limits."; return; }
+      submitButton.disabled = true; statusEl.textContent = "Sending your little light...";
+      const entry = {name,message,created_at:new Date().toISOString()};
+      try {
+        if (supabase) {
+          const { error } = await supabase.from("gratitude_entries").insert({name,message});
+          if (error) throw error;
+          const { data } = await supabase.from("gratitude_entries").select("id,name,message,created_at").order("created_at",{ascending:false}).limit(30);
+          if (data) renderEntries(data);
+        } else {
+          renderEntries(saveDemoEntry(entry));
+        }
+        form.reset(); count.textContent = "0"; statusEl.textContent = "Your gratitude has been planted.";
+        showReveal(message);
+      } catch (error) {
+        console.error(error); statusEl.textContent = "Couldn't share right now. Please try again in a moment.";
+      } finally { submitButton.disabled = false; }
+    });
+
+    // A handful of softly glowing autumn leaves drift through the background.
+    const forest = document.querySelector(".forest");
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      for (let i=0;i<13;i++) {
+        const leaf=document.createElement("span"); leaf.className="leaf"; leaf.textContent=["✦","❧","✧","❋"][i%4];
+        leaf.style.left=(Math.random()*100)+"%"; leaf.style.animationDuration=(15+Math.random()*19)+"s";
+        leaf.style.animationDelay=(-Math.random()*30)+"s"; leaf.style.fontSize=(12+Math.random()*15)+"px";
+        forest.append(leaf);
+      }
+    }
+    setupCommunityWall();
+  </script>
+</body>
+</html>
