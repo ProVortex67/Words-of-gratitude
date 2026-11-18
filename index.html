@@ -35,6 +35,12 @@
     .hero p{max-width:530px;margin:0 auto;color:#c3cabb;font-size:16px;line-height:1.8}
     .ornament{display:flex;align-items:center;justify-content:center;gap:12px;color:#d4a85e;margin:28px auto 0;font-size:13px}.ornament:before,.ornament:after{content:"";height:1px;width:48px;background:linear-gradient(90deg,transparent,#b58b50)}
     .ornament:after{transform:rotate(180deg)}
+
+    .forest-story{max-width:760px;margin:0 auto 42px;padding:0 12px;text-align:center}
+    .forest-story p{color:#bfcbb9;font-size:13px;line-height:1.7;margin:10px auto 18px;max-width:560px}
+    .forest-meter{height:7px;max-width:420px;margin:0 auto 10px;border-radius:20px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(245,200,117,.16)}
+    .forest-meter-fill{height:100%;width:0;background:linear-gradient(90deg,#8fae75,#f5c875);border-radius:20px;transition:width .8s ease;box-shadow:0 0 18px rgba(245,200,117,.5)}
+    .forest-count{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#e5c27f}
     .layout{display:grid;grid-template-columns:1fr .88fr;gap:22px;align-items:start;padding-bottom:76px}
     .panel{background:linear-gradient(145deg,rgba(31,50,39,.88),rgba(17,30,24,.88));border:1px solid var(--line);border-radius:22px;box-shadow:0 22px 70px rgba(0,0,0,.2);backdrop-filter:blur(14px)}
     .form-panel{padding:32px}
@@ -57,8 +63,9 @@
     .live{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#b9d1a9;border:1px solid rgba(185,209,169,.25);padding:7px 9px;border-radius:30px;white-space:nowrap}
     .wall-intro{color:var(--muted);font-size:12px;margin:0 0 18px}
     .entries{display:grid;gap:11px}
-    .entry{padding:16px 17px;border:1px solid rgba(244,220,176,.12);background:rgba(8,17,13,.36);border-radius:14px;animation:arrive .65s both}
+    .entry{position:relative;padding:16px 17px 16px 48px;border:1px solid rgba(244,220,176,.12);background:rgba(8,17,13,.36);border-radius:14px;animation:arrive .65s both}
     @keyframes arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .entry:before{content:"✦";position:absolute;left:16px;top:17px;color:var(--gold);font-size:17px;text-shadow:0 0 14px rgba(245,200,117,.8);animation:pulse 3s infinite}
     .entry-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
     .entry-name{font-size:12px;color:var(--gold);font-weight:700}.entry-date{font-size:9px;color:#849184}
     .entry-message{font-family:'Playfair Display',serif;font-size:17px;line-height:1.45;color:#f5eddb;overflow-wrap:anywhere}
@@ -77,6 +84,7 @@
     @keyframes blink{to{visibility:hidden}}
     .confetti-piece{position:fixed;top:-18px;left:var(--x);width:var(--w);height:var(--h);background:var(--c);z-index:20;pointer-events:none;opacity:.95;border-radius:2px;animation:confetti-fall var(--duration) cubic-bezier(.18,.65,.35,1) forwards;transform:rotate(var(--rotation))}
     @keyframes confetti-fall{to{transform:translate3d(var(--drift),110vh,0) rotate(var(--spin));opacity:.12}}
+    .share-card{margin:10px 8px 0 0;background:linear-gradient(110deg,#e8c17a,#c98b48);border:0;border-radius:30px;color:#1d2118;padding:11px 18px;cursor:pointer;font:700 12px 'DM Sans'}
     .close{margin-top:22px;background:transparent;border:1px solid rgba(245,200,117,.55);border-radius:30px;color:var(--gold);padding:11px 23px;cursor:pointer}
     footer{border-top:1px solid rgba(255,255,255,.08);padding:25px 0 35px;color:#829084;font-size:10px;display:flex;justify-content:space-between;gap:15px}
     footer span:last-child{color:#b9a77f}
@@ -98,6 +106,13 @@
         <h1>Words of <span>Gratitude</span></h1>
         <p>Among the falling leaves, take a moment to notice the good things. A person, a place, a tiny moment — every bit of gratitude adds a little light.</p>
         <div class="ornament" aria-hidden="true">✦</div>
+      </section>
+      <section class="forest-story" aria-label="Growing forest of gratitude">
+        <div class="eyebrow">Small words. A brighter world.</div>
+        <h2 style="font-size:clamp(27px,5vw,39px);margin:12px 0 4px">Together, we grow a forest of <span style="color:var(--gold);font-style:italic">kindness</span>.</h2>
+        <p>Every message is a seed. Every kind thought adds a little light. Plant yours and watch this forest grow.</p>
+        <div class="forest-meter" aria-hidden="true"><div class="forest-meter-fill" id="forest-progress"></div></div>
+        <div class="forest-count" id="forest-count">0 little lights planted</div>
       </section>
       <section class="layout">
         <div class="panel form-panel" id="share">
@@ -127,7 +142,7 @@
     <footer><span>Made with a grateful heart · November 2026</span><span>Let the little things glow.</span></footer>
   </div>
   <div class="reveal" id="reveal" role="dialog" aria-modal="true" aria-labelledby="reveal-title">
-    <div class="reveal-card"><div class="reveal-spark">✧ ✦ ✧</div><div class="eyebrow">Your thought has found its place</div><h2 id="reveal-title">A little light, shared.</h2><blockquote id="reveal-quote"></blockquote><p>Thank you for adding your light to this little corner of the world.</p><button class="close" id="close-reveal">Return to the forest</button></div>
+    <div class="reveal-card"><div class="reveal-spark">✧ ✦ ✧</div><div class="eyebrow">Your thought has found its place</div><h2 id="reveal-title">A little light, shared.</h2><blockquote id="reveal-quote"></blockquote><p>Thank you for adding your light to this little corner of the world.</p><button class="share-card" id="share-gratitude">Share this little light</button><button class="close" id="close-reveal">Return to the forest</button></div>
   </div>
   <script>
     // Add your Supabase project URL and anon key here after running supabase/schema.sql.
@@ -144,6 +159,8 @@
     const submitButton = document.getElementById("submit-button");
     const connectionState = document.getElementById("connection-state");
     const reveal = document.getElementById("reveal");
+    const forestCount = document.getElementById("forest-count");
+    const forestProgress = document.getElementById("forest-progress");
     let supabase = null;
     let realtimeChannel = null;
     let typingTimer = null;
@@ -196,6 +213,17 @@
 
     messageInput.addEventListener("input", () => count.textContent = messageInput.value.length);
     document.getElementById("close-reveal").addEventListener("click", () => { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); });
+    document.getElementById("share-gratitude").addEventListener("click", async () => {
+      const message = document.getElementById("reveal-quote").textContent.replace(/^“|”$/g, "");
+      const shareText = "A little light from Words of Gratitude: " + message + " — " + location.href;
+      try {
+        if (navigator.share) await navigator.share({title:"Words of Gratitude",text:shareText,url:location.href});
+        else if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareText);
+          statusEl.textContent = "Your gratitude message was copied. Share it with someone!";
+        } else statusEl.textContent = "Sharing isn't supported in this browser.";
+      } catch (error) { if (error.name !== "AbortError") statusEl.textContent = "Couldn't open sharing on this device."; }
+    });
     reveal.addEventListener("click", event => { if (event.target === reveal) { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); } });
     document.addEventListener("keydown", event => { if (event.key === "Escape") { reveal.classList.remove("show"); if (typingTimer) clearTimeout(typingTimer); } });
 
@@ -224,7 +252,14 @@
       localStorage.setItem(DEMO_KEY, JSON.stringify(all));
       return all;
     }
+    function updateForest(entries) {
+      const total = entries.length;
+      forestCount.textContent = total + (total === 1 ? " little light planted" : " little lights planted");
+      forestProgress.style.width = Math.min(100, total * 5) + "%";
+      document.querySelector(".glow").style.opacity = String(Math.min(.34, .12 + total * .012));
+    }
     function renderEntries(entries) {
+      updateForest(entries);
       entriesEl.replaceChildren();
       if (!entries.length) {
         const empty = document.createElement("div");
